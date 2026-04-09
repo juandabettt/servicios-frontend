@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Facturas - ServiciosYa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2e3132",
+                        "inverse-primary": "#81d6c0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#005513",
+                        "secondary-fixed": "#ffdbc8",
+                        "secondary-fixed-dim": "#ffb68b",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#00701c",
+                        "on-primary-fixed-variant": "#005143",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#fb7800",
+                        "tertiary-fixed": "#70ff76",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-container": "#006d5b",
+                        "surface-variant": "#e1e3e4",
+                        "primary": "#005344",
+                        "primary-fixed-dim": "#81d6c0",
+                        "on-error": "#ffffff",
+                        "secondary": "#994700",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#9df3dc",
+                        "surface-tint": "#006b59",
+                        "outline": "#6e7975",
+                        "on-secondary-fixed-variant": "#753400",
+                        "on-secondary-container": "#592600",
+                        "background": "#f8f9fa",
+                        "outline-variant": "#bec9c4",
+                        "on-background": "#191c1d",
+                        "on-primary-container": "#96ebd5",
+                        "on-secondary-fixed": "#321200",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#42e355",
+                        "on-tertiary-fixed": "#002204",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-container": "#5bf968",
+                        "on-primary-fixed": "#00201a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#005313",
+                        "surface-container": "#edeeef",
+                        "on-surface-variant": "#3e4945"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+    <nav
+        class="bg-surface/80 backdrop-blur-xl sticky top-0 z-40 shadow-sm flex justify-between items-center px-6 py-3 w-full">
+        <div class="flex items-center gap-4 flex-1">
+            <span class="text-xl font-bold text-teal-900 brand-font">ServiciosYa</span>
+            <div class="hidden md:flex relative ml-8 flex-1 max-w-md">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-sm"
+                    data-icon="search">search</span>
+                <input
+                    class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20"
+                    placeholder="Buscar facturas..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="p-2 text-teal-900 hover:bg-gray-100 transition-colors rounded-full"
+                data-interaction="scale-95">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+            </button>
+            <button class="p-2 text-teal-900 hover:bg-gray-100 transition-colors rounded-full"
+                data-interaction="scale-95">
+                <span class="material-symbols-outlined" data-icon="help">help</span>
+            </button>
+            <img alt="User profile" class="w-8 h-8 rounded-full ml-2 object-cover"
+                data-alt="professional portrait of a smiling young man in business casual attire with bright office lighting"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhpH-83E6EJgrJ2uXmSt-khnyJ-5SBLUdKX_K-3BqjwyTLbMsaQcB6fP46DFIsuIpGVvuvQSA0Q4mjoteruFtWmms-K4VupX_AQn6v_CLYQ1dStGtF1UpmvkOKVyg8ktpim43hEmxsG5zxU_fzkam14Rv7oCJMrJlvD2GgwKgpgA9-GDcODCssxiG0jnt77Sasx2gpTyga8GyOLsmcW5oLJkS5YorlsOzV9MAR5r94FEz9pAIxf6JqjDFZgEB3Ks-WGfaOMQiqEvY" />
+        </div>
+    </nav>
+    <main class="max-w-5xl mx-auto px-6 pt-12 md:flex md:gap-8">
+        <aside
+            class="hidden md:flex flex-col h-full p-4 fixed left-0 top-0 h-screen w-[240px] z-50 bg-gray-50 border-r border-gray-200/50">
+            <div class="mb-8 px-2">
+                <h2 class="text-2xl font-black text-teal-900 brand-font">ServiciosYa</h2>
+                <p class="text-xs text-gray-600 font-medium font-plus-jakarta">Digital Concierge</p>
+            </div>
+            <div class="space-y-2">
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="home">home</span> Inicio
+                </a>
+                <a class="flex items-center gap-3 p-3 text-teal-900 font-bold bg-teal-50 rounded-lg translate-x-1 transition-transform font-plus-jakarta text-sm"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="description">description</span> Facturas
+                </a>
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="payments">payments</span> Pagar
+                </a>
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="psychology">psychology</span> Análisis IA
+                </a>
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="person">person</span> Perfil
+                </a>
+            </div>
+            <div class="mt-auto border-t border-gray-200/50 pt-4 space-y-2">
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="settings">settings</span> Ajustes
+                </a>
+                <a class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-200 transition-all font-plus-jakarta text-sm font-medium"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="logout">logout</span> Cerrar Sesión
+                </a>
+            </div>
+        </aside>
+        <section class="flex-1 md:ml-[240px]">
+            <header class="mb-10">
+                <h1 class="text-4xl font-extrabold text-teal-900 tracking-tight mb-2">Mis Facturas</h1>
+                <p class="text-on-surface-variant max-w-md">Administra y paga todos tus servicios públicos en un solo
+                    lugar.</p>
+            </header>
+            <div class="md:hidden mb-6">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant"
+                        data-icon="search">search</span>
+                    <input
+                        class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary/20"
+                        placeholder="Buscar servicios..." type="text" />
+                </div>
+            </div>
+            <div class="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+                <button
+                    class="px-6 py-2 rounded-full bg-primary text-on-primary font-medium text-sm transition-transform active:scale-95">Todas</button>
+                <button
+                    class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-colors active:scale-95">Pendientes</button>
+                <button
+                    class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-medium text-sm hover:bg-surface-container-highest transition-colors active:scale-95">Pagadas</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                <article
+                    class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-primary shadow-sm hover:translate-y-[-2px] transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-lg text-primary">
+                                <span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-teal-900">Empopasto</h3>
+                                <p class="text-xs text-on-surface-variant font-medium">Acueducto y Alcantarillado</p>
+                            </div>
+                        </div>
+                        <span
+                            class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Pendiente</span>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Periodo</p>
+                            <p class="text-sm font-semibold text-teal-900">Octubre 2023</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Monto</p>
+                            <p class="text-xl font-black text-teal-900">$84.500</p>
+                        </div>
+                    </div>
+                </article>
+                <article
+                    class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-tertiary shadow-sm hover:translate-y-[-2px] transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-tertiary-fixed flex items-center justify-center rounded-lg text-tertiary">
+                                <span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-teal-900">CEDENAR</h3>
+                                <p class="text-xs text-on-surface-variant font-medium">Energía Eléctrica</p>
+                            </div>
+                        </div>
+                        <span
+                            class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Pagada</span>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Periodo</p>
+                            <p class="text-sm font-semibold text-teal-900">Septiembre 2023</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Monto</p>
+                            <p class="text-xl font-black text-teal-900">$122.300</p>
+                        </div>
+                    </div>
+                </article>
+                <article
+                    class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-error shadow-sm hover:translate-y-[-2px] transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-error-container flex items-center justify-center rounded-lg text-error">
+                                <span class="material-symbols-outlined" data-icon="mode_fan">mode_fan</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-teal-900">Alcanos</h3>
+                                <p class="text-xs text-on-surface-variant font-medium">Gas Natural</p>
+                            </div>
+                        </div>
+                        <span
+                            class="px-3 py-1 bg-red-100 text-red-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Vencida</span>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Periodo</p>
+                            <p class="text-sm font-semibold text-teal-900">Agosto 2023</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Monto</p>
+                            <p class="text-xl font-black text-teal-900">$25.100</p>
+                        </div>
+                    </div>
+                </article>
+                <article
+                    class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-secondary shadow-sm hover:translate-y-[-2px] transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-secondary-fixed flex items-center justify-center rounded-lg text-secondary">
+                                <span class="material-symbols-outlined" data-icon="language">language</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-teal-900">Claro</h3>
+                                <p class="text-xs text-on-surface-variant font-medium">Internet &amp; TV</p>
+                            </div>
+                        </div>
+                        <span
+                            class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Pendiente</span>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Periodo</p>
+                            <p class="text-sm font-semibold text-teal-900">Octubre 2023</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-outline uppercase font-bold tracking-widest mb-1">Monto</p>
+                            <p class="text-xl font-black text-teal-900">$105.000</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="mt-16 flex flex-col items-center justify-center text-center opacity-40">
+                <div class="w-32 h-32 mb-6 bg-surface-container rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl text-outline-variant"
+                        data-icon="receipt_long">receipt_long</span>
+                </div>
+                <h3 class="text-xl font-bold text-teal-900">No hay más facturas</h3>
+                <p class="text-on-surface-variant text-sm mt-2">Agrega una nueva factura para empezar a gestionarla.</p>
+            </div>
+        </section>
+    </main>
+    <button
+        class="fixed bottom-24 right-6 md:bottom-12 md:right-12 w-16 h-16 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-[0_12px_32px_rgba(25,28,29,0.06)] active:scale-95 transition-transform z-50">
+        <span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+    </button>
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 backdrop-blur-2xl border-t border-gray-100 z-50">
+        <div
+            class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-medium font-plus-jakarta">Inicio</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center bg-teal-800 text-white rounded-2xl p-3 scale-90 transition-transform duration-200">
+            <span class="material-symbols-outlined" data-icon="description">description</span>
+            <span class="text-[10px] font-medium font-plus-jakarta">Facturas</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200">
+            <span class="material-symbols-outlined" data-icon="payments">payments</span>
+            <span class="text-[10px] font-medium font-plus-jakarta">Pagar</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200">
+            <span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+            <span class="text-[10px] font-medium font-plus-jakarta">Análisis IA</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="text-[10px] font-medium font-plus-jakarta">Perfil</span>
+        </div>
+    </nav>
+</body>
+
+</html>

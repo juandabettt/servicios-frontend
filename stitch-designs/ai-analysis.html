@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Análisis IA - ServiciosYa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2e3132",
+                        "inverse-primary": "#81d6c0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#005513",
+                        "secondary-fixed": "#ffdbc8",
+                        "secondary-fixed-dim": "#ffb68b",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#00701c",
+                        "on-primary-fixed-variant": "#005143",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#fb7800",
+                        "tertiary-fixed": "#70ff76",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-container": "#006d5b",
+                        "surface-variant": "#e1e3e4",
+                        "primary": "#005344",
+                        "primary-fixed-dim": "#81d6c0",
+                        "on-error": "#ffffff",
+                        "secondary": "#994700",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#9df3dc",
+                        "surface-tint": "#006b59",
+                        "outline": "#6e7975",
+                        "on-secondary-fixed-variant": "#753400",
+                        "on-secondary-container": "#592600",
+                        "background": "#f8f9fa",
+                        "outline-variant": "#bec9c4",
+                        "on-background": "#191c1d",
+                        "on-primary-container": "#96ebd5",
+                        "on-secondary-fixed": "#321200",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#42e355",
+                        "on-tertiary-fixed": "#002204",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-container": "#5bf968",
+                        "on-primary-fixed": "#00201a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#005313",
+                        "surface-container": "#edeeef",
+                        "on-surface-variant": "#3e4945"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .font-plus-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface selection:bg-primary/10">
+    <!-- Desktop Side Navigation -->
+    <aside
+        class="hidden md:flex fixed left-0 top-0 h-screen w-[240px] z-50 bg-gray-50 dark:bg-gray-900 border-r border-gray-200/50 dark:border-gray-800/50 flex-col p-4">
+        <div class="mb-10 px-2">
+            <h1 class="text-2xl font-black text-teal-900 dark:text-teal-100 font-plus-jakarta">ServiciosYa</h1>
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Digital Concierge</p>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all font-plus-jakarta text-sm font-medium"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="home">home</span> Inicio
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all font-plus-jakarta text-sm font-medium"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="description">description</span> Facturas
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all font-plus-jakarta text-sm font-medium"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="payments">payments</span> Pagar
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-teal-900 dark:text-teal-100 font-bold bg-teal-50 dark:bg-teal-900/30 rounded-lg translate-x-1 transition-transform font-plus-jakarta text-sm"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="psychology"
+                    style="font-variation-settings: 'FILL' 1;">psychology</span> Análisis IA
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all font-plus-jakarta text-sm font-medium"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="person">person</span> Perfil
+            </a>
+        </nav>
+        <div class="pt-4 border-t border-gray-200/50 space-y-2">
+            <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 font-plus-jakarta text-sm font-medium"
+                href="#">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span> Ajustes
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-error font-plus-jakarta text-sm font-medium" href="#">
+                <span class="material-symbols-outlined" data-icon="logout">logout</span> Cerrar Sesión
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="md:ml-[240px] min-h-screen pb-24 md:pb-8">
+        <!-- Top Navigation (Mobile) & Header Cluster (All) -->
+        <header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-xl px-6 py-6 flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="bg-primary-container/20 p-2 rounded-xl">
+                        <span class="material-symbols-outlined text-primary" data-icon="psychology"
+                            style="font-variation-settings: 'FILL' 1;">psychology</span>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-extrabold text-primary font-headline leading-none">Análisis IA</h2>
+                        <p class="text-label-md text-on-surface-variant font-medium mt-1">Optimizando tu consumo diario
+                        </p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                    </button>
+                    <img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary-container"
+                        data-alt="Professional headshot of a smiling man in a creative office setting with soft natural light"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1bxJXe2z2ibyQwErbH3QpCuzQ2pt4aZzOVzbLqSCs98IHDF2D-cxs1d3T53Cejnx5SGa_sCcxUKP2Vyvd-foNaD7JIprUeYS4O1UHP2DHDauyfP4IGi1vbbYVh87kuQi-oBu4d_tMtINNdY4U8qVyGi8fvs3bTtWNfeN6_FN9wgSZF9-DkzKniHgygyrHS5Oqj9t2dWmlk8ZOPQO1YhDDcdT3EDyuVd8MabNvBg2DbrjUxovu9KRm-dgusPAmV9VkR-aeiuLO0aM" />
+                </div>
+            </div>
+            <!-- Property Selector Strip -->
+            <div class="flex items-center gap-3 bg-surface-container-low p-2 rounded-2xl overflow-x-auto no-scrollbar">
+                <button
+                    class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl font-semibold text-sm whitespace-nowrap">
+                    <span class="material-symbols-outlined text-sm" data-icon="home">home</span> Casa Medellín
+                </button>
+                <button
+                    class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl font-medium text-sm whitespace-nowrap transition-colors">
+                    <span class="material-symbols-outlined text-sm" data-icon="apartment">apartment</span> Apto Bogotá
+                </button>
+                <button
+                    class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl font-medium text-sm whitespace-nowrap transition-colors">
+                    <span class="material-symbols-outlined text-sm" data-icon="add">add</span> Nueva Propiedad
+                </button>
+            </div>
+        </header>
+        <section class="px-6 space-y-8">
+            <!-- Bento Grid - Key Insights -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Prediction Card -->
+                <div
+                    class="md:col-span-7 lg:col-span-8 bg-primary-container/10 rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between min-h-[320px]">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start">
+                            <span
+                                class="px-3 py-1 bg-primary text-on-primary rounded-full text-[10px] font-bold uppercase tracking-widest">Predicción
+                                IA</span>
+                            <span class="text-primary font-bold flex items-center gap-1 text-sm">
+                                <span class="material-symbols-outlined text-sm" data-icon="verified">verified</span>
+                                Confianza 94%
+                            </span>
+                        </div>
+                        <h3 class="text-3xl md:text-4xl font-extrabold text-primary mt-6 font-headline">Próxima factura
+                            energía</h3>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="text-5xl font-black text-primary">$108.000</span>
+                            <span class="text-on-surface-variant font-medium">estimado</span>
+                        </div>
+                    </div>
+                    <div class="relative z-10 mt-8">
+                        <div class="flex justify-between text-xs font-bold text-primary/60 mb-2">
+                            <span>Rango esperado</span>
+                            <span>$102k — $114k</span>
+                        </div>
+                        <div class="h-2 w-full bg-primary/10 rounded-full overflow-hidden">
+                            <div class="h-full w-2/3 bg-primary rounded-full relative">
+                                <div
+                                    class="absolute right-0 -top-1 w-4 h-4 bg-primary border-4 border-white rounded-full">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative Background Gradient -->
+                    <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+                </div>
+                <!-- Neighbors Comparison -->
+                <div
+                    class="md:col-span-5 lg:col-span-4 bg-secondary-container/10 rounded-3xl p-8 flex flex-col justify-between border-l-4 border-secondary">
+                    <div>
+                        <span class="material-symbols-outlined text-secondary text-4xl mb-4"
+                            data-icon="groups">groups</span>
+                        <h4 class="text-xl font-extrabold text-secondary font-headline">Vs. Vecinos</h4>
+                        <p class="text-on-surface-variant mt-2 leading-relaxed">Estás usando un <span
+                                class="text-secondary font-bold">18% más</span> energía que propiedades similares en El
+                            Poblado.</p>
+                    </div>
+                    <div class="mt-6 flex gap-4">
+                        <div class="flex-1 bg-white p-4 rounded-2xl shadow-sm">
+                            <p class="text-[10px] text-on-surface-variant font-bold uppercase">Tu consumo</p>
+                            <p class="text-xl font-black text-secondary">240kWh</p>
+                        </div>
+                        <div class="flex-1 bg-white p-4 rounded-2xl shadow-sm">
+                            <p class="text-[10px] text-on-surface-variant font-bold uppercase">Promedio</p>
+                            <p class="text-xl font-black text-on-surface">203kWh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Service Consumption Graph -->
+            <div class="bg-surface-container-low rounded-[32px] p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                    <div>
+                        <h3 class="text-2xl font-extrabold font-headline">Histórico de Consumo</h3>
+                        <p class="text-on-surface-variant text-sm">Últimos 6 meses de actividad</p>
+                    </div>
+                    <div class="flex bg-surface-container-high p-1.5 rounded-2xl gap-1">
+                        <button
+                            class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-sm transition-all">Energía</button>
+                        <button
+                            class="px-5 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-xl text-sm font-medium transition-all">Agua</button>
+                        <button
+                            class="px-5 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-xl text-sm font-medium transition-all">Gas</button>
+                    </div>
+                </div>
+                <!-- Custom Visual Graph (CSS Based) -->
+                <div class="relative h-[240px] w-full flex items-end justify-between gap-2 md:gap-8 pt-8 px-2 md:px-6">
+                    <!-- Graph Y-Axis Lines -->
+                    <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                        <div class="border-t border-on-surface-variant"></div>
+                        <div class="border-t border-on-surface-variant"></div>
+                        <div class="border-t border-on-surface-variant"></div>
+                        <div class="border-t border-on-surface-variant"></div>
+                    </div>
+                    <!-- Bars -->
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary/20 rounded-t-xl h-[40%] transition-all group-hover:h-[45%]">
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">ENE</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary/20 rounded-t-xl h-[60%] transition-all group-hover:h-[65%]">
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">FEB</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary/40 rounded-t-xl h-[55%] transition-all group-hover:h-[60%]">
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">MAR</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary/60 rounded-t-xl h-[75%] transition-all group-hover:h-[80%]">
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">ABR</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary/80 rounded-t-xl h-[90%] transition-all group-hover:h-[95%]">
+                        </div>
+                        <span class="text-xs font-bold text-on-surface-variant">MAY</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-3 group">
+                        <div
+                            class="w-full max-w-[40px] bg-primary rounded-t-xl h-[65%] transition-all group-hover:h-[70%]">
+                        </div>
+                        <span class="text-xs font-bold text-primary font-black">JUN</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Insights List -->
+            <div class="space-y-6">
+                <div class="flex justify-between items-end">
+                    <h3 class="text-2xl font-extrabold font-headline">Recomendaciones IA</h3>
+                    <button class="text-primary font-bold text-sm hover:underline">Ver todo</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Insight 1 -->
+                    <div
+                        class="bg-surface-container-lowest p-6 rounded-3xl flex gap-6 border border-transparent hover:border-primary-fixed transition-all group">
+                        <div class="bg-tertiary-container/10 p-4 rounded-2xl h-fit">
+                            <span class="material-symbols-outlined text-tertiary" data-icon="eco"
+                                style="font-variation-settings: 'FILL' 1;">eco</span>
+                        </div>
+                        <div class="space-y-3">
+                            <h5 class="text-lg font-bold font-headline leading-tight">Optimiza el uso de la lavadora
+                            </h5>
+                            <p class="text-on-surface-variant text-sm leading-relaxed">Tu consumo de agua y luz sube un
+                                30% los martes. Lava cargas completas los fines de semana para ahorrar hasta <span
+                                    class="text-tertiary font-bold">$12.000</span>.</p>
+                            <button
+                                class="flex items-center gap-2 text-primary font-bold text-sm py-2 px-4 bg-primary-container/5 rounded-xl hover:bg-primary-container/20 transition-colors">
+                                Crear recordatorio <span class="material-symbols-outlined text-sm"
+                                    data-icon="chevron_right">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Insight 2 -->
+                    <div
+                        class="bg-surface-container-lowest p-6 rounded-3xl flex gap-6 border border-transparent hover:border-secondary-fixed transition-all group">
+                        <div class="bg-secondary-container/10 p-4 rounded-2xl h-fit">
+                            <span class="material-symbols-outlined text-secondary" data-icon="bolt"
+                                style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        </div>
+                        <div class="space-y-3">
+                            <h5 class="text-lg font-bold font-headline leading-tight">Consumo "Vampiro" detectado</h5>
+                            <p class="text-on-surface-variant text-sm leading-relaxed">Identificamos un consumo base de
+                                12kWh entre las 2 AM y 5 AM. Revisa cargadores o electrodomésticos en stand-by.</p>
+                            <button
+                                class="flex items-center gap-2 text-secondary font-bold text-sm py-2 px-4 bg-secondary-container/5 rounded-xl hover:bg-secondary-container/20 transition-colors">
+                                Guía de ahorro <span class="material-symbols-outlined text-sm"
+                                    data-icon="chevron_right">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Savings Goal Card -->
+            <div
+                class="bg-primary p-8 rounded-[32px] text-on-primary flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative">
+                <div class="relative z-10 space-y-4 max-w-lg">
+                    <h3 class="text-2xl md:text-3xl font-extrabold font-headline">Estás a $4.500 de tu meta mensual</h3>
+                    <p class="opacity-80">Si mantienes tu ritmo de consumo actual, podrías ahorrar un 5% adicional este
+                        mes.</p>
+                    <div class="w-full bg-white/10 rounded-full h-3">
+                        <div class="bg-secondary h-full rounded-full w-[85%] shadow-[0_0_15px_rgba(251,120,0,0.5)]">
+                        </div>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <button
+                        class="bg-white text-primary font-black py-4 px-8 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all">
+                        Ver Plan de Ahorro
+                    </button>
+                </div>
+                <!-- Abstract Texture BG -->
+                <div
+                    class="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-[-20deg] translate-x-10 pointer-events-none">
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 backdrop-blur-2xl border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_24px_rgba(0,0,0,0.05)] z-50 rounded-t-3xl">
+        <a class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Inicio</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="description">description</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Facturas</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="payments">payments</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Pagar</span>
+        </a>
+        <a class="flex flex-col items-center justify-center bg-teal-800 text-white rounded-2xl p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="psychology"
+                style="font-variation-settings: 'FILL' 1;">psychology</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Análisis IA</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Perfil</span>
+        </a>
+    </nav>
+</body>
+
+</html>

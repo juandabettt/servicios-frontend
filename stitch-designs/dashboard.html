@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ServiciosYa - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2e3132",
+                        "inverse-primary": "#81d6c0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#005513",
+                        "secondary-fixed": "#ffdbc8",
+                        "secondary-fixed-dim": "#ffb68b",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#00701c",
+                        "on-primary-fixed-variant": "#005143",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-container": "#fb7800",
+                        "tertiary-fixed": "#70ff76",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-container": "#006d5b",
+                        "surface-variant": "#e1e3e4",
+                        "primary": "#005344",
+                        "primary-fixed-dim": "#81d6c0",
+                        "on-error": "#ffffff",
+                        "secondary": "#994700",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#9df3dc",
+                        "surface-tint": "#006b59",
+                        "outline": "#6e7975",
+                        "on-secondary-fixed-variant": "#753400",
+                        "on-secondary-container": "#592600",
+                        "background": "#f8f9fa",
+                        "outline-variant": "#bec9c4",
+                        "on-background": "#191c1d",
+                        "on-primary-container": "#96ebd5",
+                        "on-secondary-fixed": "#321200",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#42e355",
+                        "on-tertiary-fixed": "#002204",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-container": "#5bf968",
+                        "on-primary-fixed": "#00201a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#005313",
+                        "surface-container": "#edeeef",
+                        "on-surface-variant": "#3e4945"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface flex min-h-screen">
+    <!-- SideNavBar (Desktop) -->
+    <aside
+        class="hidden md:flex flex-col h-screen w-[240px] z-50 fixed left-0 top-0 bg-gray-50 dark:bg-gray-900 border-r border-gray-200/50 dark:border-gray-800/50 p-4">
+        <div class="flex flex-col h-full">
+            <div class="mb-10 px-2">
+                <span class="text-2xl font-black text-teal-900 dark:text-teal-100 brand-font">ServiciosYa</span>
+                <p class="text-[10px] text-teal-800 dark:text-teal-300 font-medium tracking-widest uppercase mt-1">
+                    Digital Concierge</p>
+            </div>
+            <nav class="flex-1 space-y-2">
+                <a class="flex items-center gap-3 px-4 py-3 text-teal-900 dark:text-teal-100 font-bold bg-teal-50 dark:bg-teal-900/30 rounded-lg translate-x-1 transition-transform"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="home">home</span>
+                    <span class="font-plus-jakarta text-sm">Inicio</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="description">description</span>
+                    <span class="font-plus-jakarta text-sm">Facturas</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="payments">payments</span>
+                    <span class="font-plus-jakarta text-sm">Pagar</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+                    <span class="font-plus-jakarta text-sm">Análisis IA</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="person">person</span>
+                    <span class="font-plus-jakarta text-sm">Perfil</span>
+                </a>
+            </nav>
+            <div class="mt-auto pt-4 space-y-2 border-t border-gray-200/50 dark:border-gray-800/50">
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    <span class="font-plus-jakarta text-sm">Ajustes</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg"
+                    href="#">
+                    <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                    <span class="font-plus-jakarta text-sm">Cerrar Sesión</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="flex-1 md:ml-[240px] pb-24 md:pb-8">
+        <!-- TopAppBar -->
+        <header
+            class="w-full sticky top-0 z-40 bg-surface/80 backdrop-blur-xl dark:bg-gray-900/80 shadow-sm flex justify-between items-center px-6 py-3 w-full">
+            <div class="flex items-center gap-4 flex-1">
+                <div
+                    class="hidden md:flex items-center bg-gray-200/20 dark:bg-gray-800/20 rounded-full px-4 py-1.5 w-full max-w-md">
+                    <span class="material-symbols-outlined text-gray-400 text-lg" data-icon="search">search</span>
+                    <input class="bg-transparent border-none focus:ring-0 text-sm font-plus-jakarta w-full"
+                        placeholder="Buscar facturas o pagos..." type="text" />
+                </div>
+                <span class="md:hidden text-xl font-bold text-teal-900 dark:text-teal-100 brand-font">ServiciosYa</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="p-2 text-teal-900 dark:text-teal-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-full relative">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+                </button>
+                <button
+                    class="p-2 text-teal-900 dark:text-teal-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-full">
+                    <span class="material-symbols-outlined" data-icon="help">help</span>
+                </button>
+                <div class="flex items-center gap-3 ml-2 pl-4 border-l border-gray-200/50 dark:border-gray-800/50">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-bold text-on-surface">Carlos Muñoz</p>
+                        <p class="text-[10px] text-on-surface-variant">Pasto, Nariño</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-fixed"
+                        data-alt="portrait of a professional latino man in his 30s with a friendly expression in a modern office environment"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVcAcKa3UuanPEEBdFKIXseIl6I2Dq8Yj_ld6eP928qTrPenytmUIPeBTnJpi_qbp0S9iYhlgpFU-poMn-UyasDf2kE0hp1mGDcN7Ghh2g2wGdl1iGJ7cFLGg-xJ7reL323obENcetzTmx0X9OdBg9mr6rTtzgdcijNoafOdg3F3A77m3pFLGxKHT9oAiOsj-IPqj8u7iogG5boKzlCsnh-PmVHVW2ggGE3SKLkxF8D3FqJVIgjqXTh-li-Hu5SXpxlQAmI8ebFvA" />
+                </div>
+            </div>
+        </header>
+        <!-- Dashboard Canvas -->
+        <div class="max-w-6xl mx-auto px-6 pt-8 space-y-8">
+            <!-- Hero Monthly Summary Section -->
+            <section
+                class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary to-primary-container p-8 text-white shadow-xl">
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-end md:items-center gap-6">
+                    <div>
+                        <p class="text-primary-fixed/80 font-medium tracking-wide mb-1">Total a pagar este mes</p>
+                        <h1 class="text-5xl font-black brand-font tracking-tight mb-2">$196.600</h1>
+                        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 w-fit">
+                            <span class="material-symbols-outlined text-sm"
+                                data-icon="pending_actions">pending_actions</span>
+                            <span class="text-xs font-bold">4 Facturas pendientes</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3 w-full md:w-auto">
+                        <button
+                            class="bg-secondary text-white font-bold py-4 px-8 rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2">
+                            <span>Pagar todo</span>
+                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+                        </button>
+                        <p class="text-[10px] text-white/60 text-center">Próximo vencimiento: 12 de Octubre</p>
+                    </div>
+                </div>
+                <!-- Decorative element -->
+                <div class="absolute -top-12 -right-12 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-primary-fixed/10 rounded-full blur-2xl"></div>
+            </section>
+            <!-- Grid Layout for AI and Quick Actions -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Quick Actions Bento Grid (Left) -->
+                <div class="lg:col-span-8 space-y-8">
+                    <div>
+                        <h3 class="text-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                            <span class="w-1.5 h-6 bg-primary rounded-full"></span>
+                            Próximos vencimientos
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Card: Water -->
+                            <div
+                                class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div
+                                        class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                                        <span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+                                    </div>
+                                    <span
+                                        class="bg-error-container text-on-error-container text-[10px] font-bold px-2.5 py-1 rounded-full">Vence
+                                        en 2 días</span>
+                                </div>
+                                <h4 class="font-bold text-on-surface">Agua (EMPOPASTO)</h4>
+                                <p class="text-2xl font-black text-primary mt-1">$42.300</p>
+                                <div class="mt-4 flex justify-between items-center text-xs text-on-surface-variant">
+                                    <span>Referencia: 449202</span>
+                                    <button class="text-primary font-bold hover:underline">Ver detalle</button>
+                                </div>
+                            </div>
+                            <!-- Card: Power -->
+                            <div
+                                class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div
+                                        class="w-12 h-12 bg-yellow-50 text-yellow-700 rounded-xl flex items-center justify-center">
+                                        <span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                                    </div>
+                                    <span
+                                        class="bg-secondary-fixed text-on-secondary-fixed-variant text-[10px] font-bold px-2.5 py-1 rounded-full">Vence
+                                        en 5 días</span>
+                                </div>
+                                <h4 class="font-bold text-on-surface">Energía (CEDENAR)</h4>
+                                <p class="text-2xl font-black text-primary mt-1">$89.200</p>
+                                <div class="mt-4 flex justify-between items-center text-xs text-on-surface-variant">
+                                    <span>Referencia: 288301</span>
+                                    <button class="text-primary font-bold hover:underline">Ver detalle</button>
+                                </div>
+                            </div>
+                            <!-- Card: Gas -->
+                            <div
+                                class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div
+                                        class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                                        <span class="material-symbols-outlined" data-icon="mode_heat">mode_heat</span>
+                                    </div>
+                                    <span
+                                        class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2.5 py-1 rounded-full">Vence
+                                        en 12 días</span>
+                                </div>
+                                <h4 class="font-bold text-on-surface">Gas Natural (Montagas)</h4>
+                                <p class="text-2xl font-black text-primary mt-1">$15.100</p>
+                                <div class="mt-4 flex justify-between items-center text-xs text-on-surface-variant">
+                                    <span>Referencia: 110293</span>
+                                    <button class="text-primary font-bold hover:underline">Ver detalle</button>
+                                </div>
+                            </div>
+                            <!-- Card: Internet -->
+                            <div
+                                class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div
+                                        class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+                                        <span class="material-symbols-outlined" data-icon="router">router</span>
+                                    </div>
+                                    <span
+                                        class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2.5 py-1 rounded-full">Vence
+                                        en 15 días</span>
+                                </div>
+                                <h4 class="font-bold text-on-surface">Internet (Claro)</h4>
+                                <p class="text-2xl font-black text-primary mt-1">$50.000</p>
+                                <div class="mt-4 flex justify-between items-center text-xs text-on-surface-variant">
+                                    <span>Referencia: 902831</span>
+                                    <button class="text-primary font-bold hover:underline">Ver detalle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Actions Buttons -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button
+                            class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-fixed transition-colors group">
+                            <span class="material-symbols-outlined text-3xl mb-3 text-primary"
+                                data-icon="upload_file">upload_file</span>
+                            <span class="text-xs font-bold text-on-surface text-center">Subir factura</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-fixed transition-colors group">
+                            <span class="material-symbols-outlined text-3xl mb-3 text-primary"
+                                data-icon="credit_card">credit_card</span>
+                            <span class="text-xs font-bold text-on-surface text-center">Métodos pago</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-fixed transition-colors group">
+                            <span class="material-symbols-outlined text-3xl mb-3 text-primary"
+                                data-icon="analytics">analytics</span>
+                            <span class="text-xs font-bold text-on-surface text-center">Análisis IA</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-fixed transition-colors group">
+                            <span class="material-symbols-outlined text-3xl mb-3 text-primary"
+                                data-icon="history">history</span>
+                            <span class="text-xs font-bold text-on-surface text-center">Historial</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Right Sidebar (Insights) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <h3 class="text-lg font-bold text-on-surface flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-secondary rounded-full"></span>
+                        AI Insights
+                    </h3>
+                    <div class="bg-surface-container-highest rounded-[1.5rem] p-6 relative overflow-hidden">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center">
+                                <span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Consumo detectado</h4>
+                                <p class="text-[10px] text-on-surface-variant">Actualizado hoy 8:12 AM</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4 relative z-10">
+                            <div
+                                class="bg-surface-container-lowest/60 backdrop-blur-sm p-4 rounded-xl border-l-4 border-error">
+                                <p class="text-sm font-medium text-on-surface">
+                                    Tu consumo de <span class="font-bold text-error">agua subió 34%</span> respecto al
+                                    mes pasado en tu sede de Pasto.
+                                </p>
+                                <p class="text-xs text-on-surface-variant mt-2">
+                                    Recomendamos revisar posibles fugas en la cocina o baño principal.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-surface-container-lowest/60 backdrop-blur-sm p-4 rounded-xl border-l-4 border-tertiary">
+                                <p class="text-sm font-medium text-on-surface">
+                                    ¡Buen ahorro en <span class="font-bold text-tertiary">energía</span>!
+                                </p>
+                                <p class="text-xs text-on-surface-variant mt-2">
+                                    Estás un 12% por debajo del promedio de tu zona este mes.
+                                </p>
+                            </div>
+                            <button
+                                class="w-full py-3 text-sm font-bold text-primary border border-primary/20 rounded-full hover:bg-primary/5 transition-colors">
+                                Ver reporte completo
+                            </button>
+                        </div>
+                        <!-- Decorative glow -->
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+                    </div>
+                    <!-- Usage Stats Miniature -->
+                    <div class="bg-surface-container-low rounded-2xl p-6">
+                        <h4 class="text-sm font-bold mb-4">Ubicación principal</h4>
+                        <div class="aspect-video w-full rounded-xl overflow-hidden mb-4 relative">
+                            <img alt="Map view of Pasto" class="w-full h-full object-cover"
+                                data-alt="abstract satellite view of a city grid with clean modern colors and map markers"
+                                data-location="Pasto, Colombia"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOhgiFXgH6DnPTZxe22e3fjnNqfzam7MTLHh6M9OMvAYM9yw1Vx7tyDpomocxF0OruHUcG1ZqVnXJTIC8VHceM3wkSschMXkR-eAR56MHHr9PKpl3SyC1X0055A7N1ssuwrP4swIBhbzrAusz3ptAlPSZwBBXAmc1mBvyib1f-fnkVYC528NVI90UOAmF38m32ih-bpASMi71k_kNtiI_JV-r7NKGG-At9M17Bp283HLc587ZmyW_N3CwYJjR2w3Z5NNUg_I-n2w4" />
+                            <div class="absolute inset-0 bg-primary/10 flex items-center justify-center">
+                                <span
+                                    class="bg-white text-primary px-3 py-1 rounded-full text-[10px] font-bold shadow-lg">Calle
+                                    18 #24-12, Pasto</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-center">
+                                <p class="text-[10px] text-on-surface-variant uppercase">Estrato</p>
+                                <p class="font-bold">4</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[10px] text-on-surface-variant uppercase">Servicios</p>
+                                <p class="font-bold">Active</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[10px] text-on-surface-variant uppercase">Puntaje</p>
+                                <p class="font-bold text-tertiary">98/100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 backdrop-blur-2xl dark:bg-gray-950/90 border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_24px_rgba(0,0,0,0.05)] z-50 rounded-t-3xl">
+        <a class="flex flex-col items-center justify-center bg-teal-800 text-white dark:bg-teal-500 dark:text-gray-950 rounded-2xl p-3 scale-90 transition-transform duration-200"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Inicio</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 p-3 active:bg-gray-100 dark:active:bg-gray-800"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="description">description</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Facturas</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 p-3 active:bg-gray-100 dark:active:bg-gray-800"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="payments">payments</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Pagar</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 p-3 active:bg-gray-100 dark:active:bg-gray-800"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">IA</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 p-3 active:bg-gray-100 dark:active:bg-gray-800"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="text-[10px] font-medium font-plus-jakarta mt-1">Perfil</span>
+        </a>
+    </nav>
+    <!-- Contextual FAB (Hidden on scroll/subpages normally, but kept for main dashboard flow) -->
+    <button
+        class="fixed right-6 bottom-24 md:bottom-8 w-14 h-14 bg-secondary text-white rounded-full shadow-[0px_12px_32px_rgba(25,28,29,0.15)] flex items-center justify-center hover:scale-110 active:scale-90 transition-transform z-40">
+        <span class="material-symbols-outlined" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+    </button>
+</body>
+
+</html>

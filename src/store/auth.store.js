@@ -1,0 +1,24 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export const useAuthStore = create(
+  persist(
+    (set) => ({
+      accessToken: null,
+      refreshToken: null,
+      user: null,
+
+      setTokens: (accessToken, refreshToken) => set({ accessToken, refreshToken }),
+      setUser: (user) => set({ user }),
+      logout: () => set({ accessToken: null, refreshToken: null, user: null }),
+    }),
+    {
+      name: 'servicios-ya-auth',
+      // Only persist refreshToken and user — NOT the accessToken
+      partialize: (state) => ({
+        refreshToken: state.refreshToken,
+        user: state.user,
+      }),
+    }
+  )
+);

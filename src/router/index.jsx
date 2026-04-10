@@ -18,6 +18,7 @@ const PaymentResult = lazy(() => import('../pages/PaymentResult'));
 const Notifications = lazy(() => import('../pages/Notifications'));
 const AutoPay = lazy(() => import('../pages/AutoPay'));
 const Profile = lazy(() => import('../pages/Profile'));
+const Properties = lazy(() => import('../pages/Properties'));
 
 function LoadingSpinner() {
   return (
@@ -62,6 +63,7 @@ export const router = createBrowserRouter([
           { path: '/notifications', element: <Suspense fallback={<LoadingSpinner />}><Notifications /></Suspense> },
           { path: '/autopay', element: <Suspense fallback={<LoadingSpinner />}><AutoPay /></Suspense> },
           { path: '/profile', element: <Suspense fallback={<LoadingSpinner />}><Profile /></Suspense> },
+          { path: '/properties', element: <Suspense fallback={<LoadingSpinner />}><Properties /></Suspense> },
         ],
       },
     ],

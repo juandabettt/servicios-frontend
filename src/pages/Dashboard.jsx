@@ -14,19 +14,25 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
 
+  const { data: propertiesData, isLoading: loadingProperties } = useQuery({
+    queryKey: ['properties'],
+    queryFn: () => propertiesApi.getAll().then((r) => r.data),
+  });
+
+  const hasProperties = propertiesData &&
+    (Array.isArray(propertiesData) ? propertiesData.length > 0 :
+    propertiesData?.content?.length > 0);
+
   const { data: invoicesData, isLoading: loadingInvoices } = useQuery({
     queryKey: ['invoices', { estado: 'PENDIENTE' }],
     queryFn: () => invoicesApi.getAll({ estado: 'PENDIENTE', size: 4 }).then((r) => r.data),
-  });
-
-  const { data: propertiesData } = useQuery({
-    queryKey: ['properties'],
-    queryFn: () => propertiesApi.getAll().then((r) => r.data),
+    enabled: hasProperties,
   });
 
   const { data: insightsData } = useQuery({
     queryKey: ['ai-insights/recommendations'],
     queryFn: () => aiApi.getRecommendations().then((r) => r.data),
+    enabled: hasProperties,
   });
 
   const invoices = invoicesData?.content || invoicesData || [];
@@ -66,6 +72,27 @@ export default function Dashboard() {
         <div className="absolute -top-12 -right-12 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
         <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-primary-fixed/10 rounded-full blur-2xl" />
       </section>
+
+      {/* Banner sin propiedades */}
+      {!hasProperties && !loadingProperties && (
+        <div className="bg-primary/5 border-2 border-dashed border-primary/20 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-xl font-bold text-on-surface">
+              Configura tu primera propiedad
+            </h3>
+            <p className="text-on-surface-variant mt-2">
+              Para comenzar a gestionar tus facturas necesitas registrar al menos una propiedad o inmueble.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/properties')}
+            className="px-8 py-4 bg-primary text-on-primary font-bold rounded-full hover:opacity-90 active:scale-95 transition-all whitespace-nowrap flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined">add_home</span>
+            Agregar propiedad
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left: Invoices + Quick Actions */}

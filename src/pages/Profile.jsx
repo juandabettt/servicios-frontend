@@ -18,7 +18,7 @@ export default function Profile() {
 
   const menuItems = [
     { icon: 'person', label: 'Datos personales', action: () => {} },
-    { icon: 'home', label: 'Mis propiedades', action: () => {} },
+    { icon: 'home', label: 'Mis propiedades', action: () => navigate('/properties') },
     { icon: 'credit_card', label: 'Métodos de pago', action: () => {} },
     { icon: 'autorenew', label: 'Autopago', action: () => navigate('/autopay') },
     { icon: 'notifications', label: 'Notificaciones', action: () => navigate('/notifications') },

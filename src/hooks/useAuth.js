@@ -26,8 +26,12 @@ export function useRegister() {
     mutationFn: (formData) => authApi.register(formData),
     onSuccess: ({ data }) => {
       setTokens(data.accessToken, data.refreshToken);
-      setUser(data.user || data.usuario);
-      navigate('/dashboard');
+      setUser(data.user || data.usuario || {
+        nombre: data.nombre,
+        email: data.email,
+      });
+      toast.success('¡Cuenta creada! Primero crea tu propiedad.');
+      navigate('/properties');
     },
   });
 }

@@ -4,7 +4,7 @@ export const aiApi = {
   triggerAnalysis: (propertyId) =>
     apiClient.post('/ai-insights/analyze', { propertyId }),
   getRecommendations: (params) =>
-    apiClient.get('/ai-insights/recommendations', { params }),
+    apiClient.get('/ai-insights/recommendations', { params, silent: true }),
   getPredictions: (propertyId, serviceType) =>
     apiClient.get('/ai-insights/predictions', { params: { propertyId, serviceType } }),
   getBenchmark: (propertyId, serviceType) =>

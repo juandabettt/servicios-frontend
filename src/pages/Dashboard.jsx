@@ -33,6 +33,9 @@ export default function Dashboard() {
     queryKey: ['ai-insights/recommendations'],
     queryFn: () => aiApi.getRecommendations().then((r) => r.data),
     enabled: hasProperties,
+    retry: false,
+    throwOnError: false,
+    staleTime: 5 * 60 * 1000,
   });
 
   const invoices = invoicesData?.content || invoicesData || [];

@@ -50,7 +50,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    if (status && status !== 401 && !originalRequest._noToast) {
+    if (status && status !== 401 && !originalRequest._noToast && !originalRequest.silent) {
       const message = ERROR_MESSAGES[status] || 'Ocurrió un error inesperado.';
       toast.error(message);
     }

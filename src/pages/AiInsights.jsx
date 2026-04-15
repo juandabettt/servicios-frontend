@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { aiApi } from '../api/ai.api';
 import { propertiesApi } from '../api/properties.api';
@@ -10,21 +11,34 @@ import toast from 'react-hot-toast';
 
 const MONTHS = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN'];
 
+const extractArray = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  if (data.content && Array.isArray(data.content)) return data.content;
+  return [];
+};
+
 export default function AiInsights() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [activeTab, setActiveTab] = useState('Energía');
   const [analyzing, setAnalyzing] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  const { data: properties } = useQuery({
+  const { data: propertiesData, isLoading: loadingProperties } = useQuery({
     queryKey: ['properties'],
     queryFn: () => propertiesApi.getAll().then((r) => r.data),
-    onSuccess: (data) => {
-      if (data?.length && !selectedProperty) setSelectedProperty(data[0]?.id);
-    },
   });
 
-  const propertyId = selectedProperty || properties?.[0]?.id;
+  useEffect(() => {
+    const props = extractArray(propertiesData);
+    if (props.length > 0 && !selectedProperty) {
+      setSelectedProperty(props[0]?.id);
+    }
+  }, [propertiesData]);
+
+  const properties = extractArray(propertiesData);
+  const propertyId = selectedProperty || properties[0]?.id || null;
 
   const { data: recommendations, isLoading: loadingRec } = useQuery({
     queryKey: ['ai-insights/recommendations', propertyId],
@@ -71,12 +85,37 @@ export default function AiInsights() {
   };
 
   // Build chart data from invoice history
-  const invoices = invoiceHistory?.content || invoiceHistory || [];
+  const insights = extractArray(recommendations);
+  const invoices = extractArray(invoiceHistory);
   const serviceFilter = { Energía: 'ENERGIA', Agua: 'AGUA', Gas: 'GAS' }[activeTab];
-  const filteredInvoices = invoices.filter((inv) => inv.tipoServicio?.toUpperCase() === serviceFilter);
-  const maxAmount = Math.max(...filteredInvoices.map((inv) => inv.montoTotal || 0), 1);
+  const filteredInvoices = (invoices || []).filter((inv) => inv.tipoServicio?.toUpperCase() === serviceFilter);
+  const maxAmount = Math.max(...(filteredInvoices || []).map((inv) => inv.montoTotal || 0), 1);
 
-  const insights = recommendations?.content || recommendations || [];
+  if (loadingProperties) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-primary-fixed border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (properties.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 gap-4 text-center px-6">
+        <span className="material-symbols-outlined text-6xl text-outline-variant">home</span>
+        <h3 className="text-xl font-bold text-on-surface">Primero crea una propiedad</h3>
+        <p className="text-on-surface-variant">
+          Necesitas al menos una propiedad para ver el análisis IA.
+        </p>
+        <button
+          onClick={() => navigate('/properties')}
+          className="px-8 py-4 bg-primary text-on-primary font-bold rounded-full hover:opacity-90 transition-all"
+        >
+          Crear propiedad
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="md:ml-0 min-h-screen pb-24 md:pb-8">
@@ -96,7 +135,7 @@ export default function AiInsights() {
 
         {/* Property selector */}
         <div className="flex items-center gap-3 bg-surface-container-low p-2 rounded-2xl overflow-x-auto scrollbar-hide">
-          {properties?.map((prop) => (
+          {(properties || []).map((prop) => (
             <button
               key={prop.id}
               onClick={() => {
@@ -112,11 +151,7 @@ export default function AiInsights() {
               <Icon name="home" className="text-sm" />
               {prop.nombre || prop.direccion}
             </button>
-          )) || (
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl font-semibold text-sm">
-              <Icon name="home" className="text-sm" /> Mi propiedad
-            </button>
-          )}
+          ))}
           <button className="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl font-medium text-sm whitespace-nowrap transition-colors">
             <Icon name="add" className="text-sm" /> Nueva Propiedad
           </button>
@@ -221,8 +256,8 @@ export default function AiInsights() {
               {[0, 1, 2, 3].map((i) => <div key={i} className="border-t border-on-surface-variant" />)}
             </div>
 
-            {filteredInvoices.length > 0
-              ? filteredInvoices.slice(-6).map((inv, i) => {
+            {(filteredInvoices || []).length > 0
+              ? (filteredInvoices || []).slice(-6).map((inv, i) => {
                   const heightPct = Math.max(((inv.montoTotal || 0) / maxAmount) * 100, 5);
                   return (
                     <div key={i} className="flex-1 flex flex-col items-center gap-3 group">
@@ -261,8 +296,8 @@ export default function AiInsights() {
             <button className="text-primary font-bold text-sm hover:underline">Ver todo</button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {insights.length > 0
-              ? insights.slice(0, 4).map((insight) => <InsightCard key={insight.id} insight={insight} />)
+            {(insights || []).length > 0
+              ? (insights || []).slice(0, 4).map((insight) => <InsightCard key={insight.id} insight={insight} />)
               : (
                 <>
                   <InsightCard insight={{

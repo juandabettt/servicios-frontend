@@ -25,6 +25,13 @@ const correctionSchema = z.object({
 
 const STEP_LABELS = ['Captura', 'Verificación', 'Confirmación'];
 
+const extractArray = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  if (data.content && Array.isArray(data.content)) return data.content;
+  return [];
+};
+
 export default function InvoiceUpload() {
   const navigate = useNavigate();
   const fileInputRef = useRef();
@@ -39,7 +46,7 @@ export default function InvoiceUpload() {
   const [ocrData, setOcrData] = useState(null);
   const [payNow, setPayNow] = useState(false);
 
-  const { data: properties } = useQuery({
+  const { data: propertiesData } = useQuery({
     queryKey: ['properties'],
     queryFn: () => propertiesApi.getAll().then((r) => r.data),
   });
@@ -99,9 +106,19 @@ export default function InvoiceUpload() {
 
   const handleUpload = async () => {
     if (!selectedFile) return;
-    const propertyId = properties?.[0]?.id || 'default';
+
+    // Obtener propertyId real — nunca usar fallback string
+    const props = extractArray(propertiesData);
+    const realPropertyId = props[0]?.id;
+
+    if (!realPropertyId) {
+      toast.error('Necesitas crear una propiedad primero');
+      navigate('/properties');
+      return;
+    }
+
     try {
-      const { data } = await invoicesApi.upload(selectedFile, propertyId);
+      const { data } = await invoicesApi.upload(selectedFile, realPropertyId);
       setInvoiceId(data.invoiceId || data.id);
       setPollingEnabled(true);
     } catch (err) {

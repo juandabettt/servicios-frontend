@@ -68,13 +68,18 @@ export default function Invoices() {
           <button
             key={f}
             onClick={() => { setFiltro(f); setPagina(0); }}
-            className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-all active:scale-95 ${
+            className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-all active:scale-95 flex items-center gap-1.5 ${
               filtro === f
                 ? 'bg-primary text-on-primary'
                 : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest'
             }`}
           >
             {f === 'TODAS' ? 'Todas' : f.charAt(0) + f.slice(1).toLowerCase()}
+            {filtro === f && invoices.length > 0 && (
+              <span className="bg-white/25 px-1.5 py-0.5 rounded-full text-xs font-bold">
+                {invoices.length}
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -101,12 +106,17 @@ export default function Invoices() {
             ))
           : (
             <div className="col-span-2 flex flex-col items-center justify-center py-16 text-center opacity-40">
-              <div className="w-32 h-32 mb-6 bg-surface-container rounded-full flex items-center justify-center">
-                <Icon name="receipt_long" className="text-6xl text-outline-variant" />
-              </div>
-              <h3 className="text-xl font-bold text-teal-900">No hay facturas</h3>
+              <span className="material-symbols-outlined text-5xl text-outline-variant mb-4">
+                {filtro === 'PAGADA' ? 'check_circle' : filtro === 'VENCIDA' ? 'warning' : 'description'}
+              </span>
+              <h3 className="text-xl font-bold text-teal-900">
+                {filtro === 'PAGADA' ? 'No tienes facturas pagadas' :
+                 filtro === 'VENCIDA' ? 'No tienes facturas vencidas' :
+                 filtro === 'PENDIENTE' ? 'No tienes facturas pendientes' :
+                 'No hay facturas'}
+              </h3>
               <p className="text-on-surface-variant text-sm mt-2">
-                Agrega una nueva factura para empezar a gestionarla.
+                {filtro === 'TODAS' ? 'Agrega una nueva factura para empezar a gestionarla.' : ''}
               </p>
             </div>
           )}

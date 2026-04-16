@@ -39,6 +39,9 @@ export default function Dashboard() {
   });
 
   const invoices = invoicesData?.content || invoicesData || [];
+  const pendientes = invoices.filter((f) => f.estado === 'PENDIENTE').length;
+  const pagadas = invoices.filter((f) => f.estado === 'PAGADA').length;
+  const vencidas = invoices.filter((f) => f.estado === 'VENCIDA').length;
   const totalAPagar = invoices.reduce((sum, inv) => sum + (inv.montoTotal || 0), 0);
   const nextDue = invoices.sort((a, b) => new Date(a.fechaVencimiento) - new Date(b.fechaVencimiento))[0];
 
@@ -54,7 +57,7 @@ export default function Dashboard() {
             </h1>
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-1 w-fit">
               <Icon name="pending_actions" className="text-sm" />
-              <span className="text-xs font-bold">{invoices.length} Facturas pendientes</span>
+              <span className="text-xs font-bold">{pendientes} Facturas pendientes{vencidas > 0 ? ` · ${vencidas} vencidas` : ''}</span>
             </div>
           </div>
           <div className="flex flex-col gap-3 w-full md:w-auto">

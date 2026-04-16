@@ -1,14 +1,31 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { invoicesApi } from '../api/invoices.api';
 import StatusBadge from '../components/ui/StatusBadge';
 import Icon from '../components/ui/Icon';
 import { formatCOP } from '../utils/currency';
 import { formatDate } from '../utils/dates';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function InvoiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const deleteMutation = useMutation({
+    mutationFn: () => invoicesApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      toast.success('Factura eliminada');
+      navigate('/invoices');
+    },
+    onError: () => {
+      toast.error('No se pudo eliminar la factura');
+    },
+  });
 
   const { data: invoice, isLoading } = useQuery({
     queryKey: ['invoice', id],
@@ -94,6 +111,22 @@ export default function InvoiceDetail() {
           <Icon name="edit" />
         </button>
       </div>
+
+      <button
+        onClick={() => setShowDeleteModal(true)}
+        className="w-full py-3 rounded-xl border border-red-200 dark:border-red-900 text-red-500 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+      >
+        Eliminar factura
+      </button>
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Eliminar factura"
+        message="¿Estás seguro de que deseas eliminar esta factura? Esta acción no se puede deshacer."
+        onConfirm={() => deleteMutation.mutate()}
+        onCancel={() => setShowDeleteModal(false)}
+        isLoading={deleteMutation.isPending}
+      />
     </div>
   );
 }

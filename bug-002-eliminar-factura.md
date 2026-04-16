@@ -1,78 +1,178 @@
-# BUG: GET /recommendations responde 500 al cargar el Dashboard
+# FEATURE-002 FRONTEND: Eliminar factura
 
-## Síntoma
-Al cargar la página de inicio (Dashboard), se hacen 3 llamadas a:
-  GET /api/v1/recommendations
-Y todas responden 500 Internal Server Error.
-Esto muestra el mensaje "Error del servidor. Por favor intenta más tarde." al usuario.
+## Contexto
+El backend ya tiene el endpoint `DELETE /api/v1/invoices/{id}`. Se necesita implementar la UI para eliminar facturas desde el listado y desde el detalle, con modal de confirmación.
 
 ## Lo que necesitas hacer
 
-### 1. Busca en el frontend dónde se llama a /recommendations
+### 1. Agregar función en la API de facturas
 
-Busca en todos los archivos de `src/` el texto "recommendations".
-Probablemente está en `src/pages/Dashboard.jsx` o en algún hook/query.
-
-### 2. Solución A — Si el backend no tiene ese endpoint aún
-
-Agrega un guard para que el error no se muestre al usuario.
-Encuentra la query/fetch de recommendations y agrégale manejo de error silencioso:
+En `src/api/invoices.api.js` agrega al final:
 
 ```javascript
-// Con TanStack Query v5:
-const { data: recommendations } = useQuery({
-  queryKey: ['recommendations'],
-  queryFn: () => apiClient.get('/recommendations').then(r => r.data),
-  retry: false,           // no reintentar si falla
-  throwOnError: false,    // no propagar el error
-})
-
-// Y donde se renderiza, usa fallback vacío:
-const recList = Array.isArray(recommendations) ? recommendations : []
+export const deleteInvoice = (id) =>
+  apiClient.delete(`/invoices/${id}`)
 ```
 
-### 3. Solución B — Si se llama 3 veces innecesariamente
+### 2. Verificar si existe ConfirmModal
 
-Si el componente hace múltiples llamadas por re-renders, agrega:
-```javascript
-staleTime: 5 * 60 * 1000,  // 5 minutos
-```
+Busca si existe `src/components/ConfirmModal.jsx`. Si no existe, créalo:
 
-### 4. Elimina el toast/mensaje de error para esta query específica
+```jsx
+export function ConfirmModal({ isOpen, onConfirm, onCancel, title, message, confirmLabel = 'Eliminar', isLoading = false }) {
+  if (!isOpen) return null
 
-El mensaje "Error del servidor" se muestra porque algún interceptor global o `onError` está mostrando un toast para CUALQUIER error.
-
-Busca en `src/api/client.js` el interceptor de respuesta. Debe tener algo como:
-```javascript
-response => response,
-error => {
-  toast.error('Error del servidor...')  // ← esto muestra el mensaje
-  return Promise.reject(error)
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm shadow-xl">
+        <h3 className="text-lg font-bold text-on-surface mb-2">{title}</h3>
+        <p className="text-sm text-on-surface-variant mb-6">{message}</p>
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            disabled={isLoading}
+            className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium disabled:opacity-50"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={isLoading}
+            className="flex-1 py-3 rounded-xl text-sm font-bold text-white bg-red-500 disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {isLoading && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            )}
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 ```
 
-Modifica para que errores de endpoints no críticos (como recommendations) no muestren toast.
-La forma más limpia: agrega una opción `silent: true` en la config de la request:
+### 3. Agregar eliminar en el listado de facturas
 
+En `src/pages/Invoices.jsx`:
+
+Agrega los imports necesarios al inicio:
 ```javascript
-// En el interceptor:
-error => {
-  if (!error.config?.silent) {
-    toast.error('Error del servidor. Por favor intenta más tarde.')
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteInvoice } from '../api/invoices.api'
+import { ConfirmModal } from '../components/ConfirmModal'
+import toast from 'react-hot-toast'
+```
+
+Dentro del componente agrega el estado y la mutación:
+```javascript
+const [deleteId, setDeleteId] = useState(null)
+const queryClient = useQueryClient()
+
+const deleteMutation = useMutation({
+  mutationFn: (id) => deleteInvoice(id),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['invoices'] })
+    toast.success('Factura eliminada')
+    setDeleteId(null)
+  },
+  onError: () => {
+    toast.error('No se pudo eliminar la factura')
+    setDeleteId(null)
   }
-  return Promise.reject(error)
-}
+})
+```
 
-// En la llamada a recommendations:
-apiClient.get('/recommendations', { silent: true })
+En cada card o fila de factura, agrega el botón de eliminar. Ubícalo en la esquina superior derecha o en un menú de opciones:
+```jsx
+<button
+  onClick={(e) => {
+    e.stopPropagation() // evita navegar al detalle al hacer clic
+    setDeleteId(factura.id)
+  }}
+  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+  title="Eliminar factura"
+>
+  <span className="material-symbols-outlined text-xl">delete</span>
+</button>
+```
+
+Al final del componente, antes del cierre del return, agrega el modal:
+```jsx
+<ConfirmModal
+  isOpen={!!deleteId}
+  title="Eliminar factura"
+  message="¿Estás seguro de que deseas eliminar esta factura? Esta acción no se puede deshacer."
+  onConfirm={() => deleteMutation.mutate(deleteId)}
+  onCancel={() => setDeleteId(null)}
+  isLoading={deleteMutation.isPending}
+/>
+```
+
+### 4. Agregar eliminar en el detalle de factura
+
+En `src/pages/InvoiceDetail.jsx`:
+
+Agrega los imports:
+```javascript
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate, useParams } from 'react-router-dom'
+import { deleteInvoice } from '../api/invoices.api'
+import { ConfirmModal } from '../components/ConfirmModal'
+import toast from 'react-hot-toast'
+```
+
+Dentro del componente:
+```javascript
+const navigate = useNavigate()
+const { id } = useParams()
+const queryClient = useQueryClient()
+const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+const deleteMutation = useMutation({
+  mutationFn: () => deleteInvoice(id),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['invoices'] })
+    toast.success('Factura eliminada')
+    navigate('/invoices')
+  },
+  onError: () => {
+    toast.error('No se pudo eliminar la factura')
+  }
+})
+```
+
+Agrega el botón de eliminar en la parte inferior de la pantalla o junto al botón de pagar:
+```jsx
+<button
+  onClick={() => setShowDeleteModal(true)}
+  className="w-full py-3 rounded-xl border border-red-200 dark:border-red-900 text-red-500 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+>
+  Eliminar factura
+</button>
+```
+
+Y el modal antes del cierre del return:
+```jsx
+<ConfirmModal
+  isOpen={showDeleteModal}
+  title="Eliminar factura"
+  message="¿Estás seguro de que deseas eliminar esta factura? Esta acción no se puede deshacer."
+  onConfirm={() => deleteMutation.mutate()}
+  onCancel={() => setShowDeleteModal(false)}
+  isLoading={deleteMutation.isPending}
+/>
 ```
 
 ## Archivos a modificar
-- `src/pages/Dashboard.jsx` — query de recommendations
-- `src/api/client.js` — interceptor de error (agregar soporte a `silent`)
-- El hook o archivo donde se defina la query de recommendations si está separado
+- `src/api/invoices.api.js` — agregar función deleteInvoice
+- `src/components/ConfirmModal.jsx` — crear si no existe
+- `src/pages/Invoices.jsx` — agregar botón y modal en listado
+- `src/pages/InvoiceDetail.jsx` — agregar botón y modal con redirección
 
 ## NO modificar
-- Otras queries del Dashboard (invoices, properties)
-- Lógica de autenticación
-- Ningún archivo del backend
+- Lógica de upload de facturas
+- Lógica de pagos
+- Cualquier otro componente no relacionado

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { invoicesApi } from '../api/invoices.api';
 import InvoiceCard from '../components/ui/InvoiceCard';
 import { SkeletonInvoiceCard } from '../components/ui/SkeletonCard';
 import Icon from '../components/ui/Icon';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 const FILTERS = ['TODAS', 'PENDIENTE', 'PAGADA', 'VENCIDA'];
 
@@ -12,6 +14,21 @@ export default function Invoices() {
   const navigate = useNavigate();
   const [filtro, setFiltro] = useState('TODAS');
   const [pagina, setPagina] = useState(0);
+  const [deleteId, setDeleteId] = useState(null);
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => invoicesApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      toast.success('Factura eliminada');
+      setDeleteId(null);
+    },
+    onError: () => {
+      toast.error('No se pudo eliminar la factura');
+      setDeleteId(null);
+    },
+  });
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ['invoices', filtro, pagina],
@@ -67,7 +84,21 @@ export default function Invoices() {
         {isLoading
           ? Array.from({ length: 4 }).map((_, i) => <SkeletonInvoiceCard key={i} />)
           : invoices.length > 0
-          ? invoices.map((invoice) => <InvoiceCard key={invoice.id} invoice={invoice} />)
+          ? invoices.map((invoice) => (
+              <div key={invoice.id} className="relative group">
+                <InvoiceCard invoice={invoice} />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDeleteId(invoice.id);
+                  }}
+                  className="absolute top-3 right-3 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                  title="Eliminar factura"
+                >
+                  <span className="material-symbols-outlined text-xl">delete</span>
+                </button>
+              </div>
+            ))
           : (
             <div className="col-span-2 flex flex-col items-center justify-center py-16 text-center opacity-40">
               <div className="w-32 h-32 mb-6 bg-surface-container rounded-full flex items-center justify-center">
@@ -101,6 +132,15 @@ export default function Invoices() {
       >
         <Icon name="add" className="text-3xl" />
       </button>
+
+      <ConfirmModal
+        isOpen={!!deleteId}
+        title="Eliminar factura"
+        message="¿Estás seguro de que deseas eliminar esta factura? Esta acción no se puede deshacer."
+        onConfirm={() => deleteMutation.mutate(deleteId)}
+        onCancel={() => setDeleteId(null)}
+        isLoading={deleteMutation.isPending}
+      />
     </div>
   );
 }

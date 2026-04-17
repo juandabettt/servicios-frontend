@@ -17,13 +17,13 @@ export default function Profile() {
   };
 
   const menuItems = [
-    { icon: 'person', label: 'Datos personales', action: () => {} },
+    { icon: 'person', label: 'Datos personales', action: () => navigate('/profile/datos-personales') },
     { icon: 'home', label: 'Mis propiedades', action: () => navigate('/properties') },
-    { icon: 'credit_card', label: 'Métodos de pago', action: () => {} },
+    { icon: 'credit_card', label: 'Métodos de pago', action: () => navigate('/profile/metodos-pago') },
     { icon: 'autorenew', label: 'Autopago', action: () => navigate('/autopay') },
     { icon: 'notifications', label: 'Notificaciones', action: () => navigate('/notifications') },
-    { icon: 'security', label: 'Seguridad', action: () => {} },
-    { icon: 'help', label: 'Ayuda y soporte', action: () => {} },
+    { icon: 'security', label: 'Seguridad', action: () => navigate('/profile/seguridad') },
+    { icon: 'help', label: 'Ayuda y soporte', action: () => navigate('/profile/ayuda') },
   ];
 
   return (

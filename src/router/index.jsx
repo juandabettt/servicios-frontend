@@ -19,6 +19,10 @@ const Notifications = lazy(() => import('../pages/Notifications'));
 const AutoPay = lazy(() => import('../pages/AutoPay'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Properties = lazy(() => import('../pages/Properties'));
+const DatosPersonales = lazy(() => import('../pages/profile/DatosPersonales'));
+const MetodosPago = lazy(() => import('../pages/profile/MetodosPago'));
+const Seguridad = lazy(() => import('../pages/profile/Seguridad'));
+const AyudaSoporte = lazy(() => import('../pages/profile/AyudaSoporte'));
 
 function LoadingSpinner() {
   return (
@@ -64,6 +68,10 @@ export const router = createBrowserRouter([
           { path: '/autopay', element: <Suspense fallback={<LoadingSpinner />}><AutoPay /></Suspense> },
           { path: '/profile', element: <Suspense fallback={<LoadingSpinner />}><Profile /></Suspense> },
           { path: '/properties', element: <Suspense fallback={<LoadingSpinner />}><Properties /></Suspense> },
+          { path: '/profile/datos-personales', element: <Suspense fallback={<LoadingSpinner />}><DatosPersonales /></Suspense> },
+          { path: '/profile/metodos-pago', element: <Suspense fallback={<LoadingSpinner />}><MetodosPago /></Suspense> },
+          { path: '/profile/seguridad', element: <Suspense fallback={<LoadingSpinner />}><Seguridad /></Suspense> },
+          { path: '/profile/ayuda', element: <Suspense fallback={<LoadingSpinner />}><AyudaSoporte /></Suspense> },
         ],
       },
     ],

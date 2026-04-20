@@ -34,7 +34,9 @@ export default function Register() {
   const { register, handleSubmit, control, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
   const registerMutation = useRegister();
   const password = useWatch({ control, name: 'password', defaultValue: '' });
+  const telefonoValue = useWatch({ control, name: 'telefono', defaultValue: '' });
   const strength = passwordStrength(password);
+  const { onChange: onTelefonoChange, ...telefonoRegister } = register('telefono');
 
   const onSubmit = ({ confirmPassword, ...data }) => {
     registerMutation.mutate({ ...data, telefono: `+57${data.telefono}` });
@@ -84,13 +86,23 @@ export default function Register() {
                   +57
                 </span>
                 <input
-                  {...register('telefono')}
+                  {...telefonoRegister}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    onTelefonoChange(e);
+                  }}
                   type="tel"
+                  maxLength={10}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="flex-1 bg-surface-container-low border border-outline-variant rounded-r-xl py-3 px-4 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none"
                   placeholder="3001234567"
                 />
               </div>
-              {errors.telefono && <p className="mt-1 text-xs text-error">{errors.telefono.message}</p>}
+              <div className="flex justify-between items-center mt-1">
+                <span>{errors.telefono && <p className="text-xs text-error">{errors.telefono.message}</p>}</span>
+                <p className="text-xs text-on-surface-variant/60">{(telefonoValue || '').length}/10 dígitos</p>
+              </div>
             </div>
 
             <div>

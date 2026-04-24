@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
-import { apiClient } from '../../api/client';
+import { profileApi } from '../../api/profile.api';
 import Icon from '../../components/ui/Icon';
 import toast from 'react-hot-toast';
 
 export default function DatosPersonales() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
 
   const [form, setForm] = useState({
     nombre: user?.nombre || user?.name || '',
@@ -25,14 +25,17 @@ export default function DatosPersonales() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (form.telefono && form.telefono.length !== 10) {
+      toast.error('El teléfono debe tener 10 dígitos');
+      return;
+    }
     setLoading(true);
     try {
-      await apiClient.put('/users/profile', form);
+      const { data } = await profileApi.update(form);
+      setUser({ ...user, ...data });
       toast.success('Datos actualizados correctamente');
-    } catch (err) {
-      if (err.response?.status === 404 || err.response?.status === 405) {
-        toast('Función disponible próximamente', { icon: '🔜' });
-      }
+    } catch {
+      // error toast handled by api client interceptor
     } finally {
       setLoading(false);
     }

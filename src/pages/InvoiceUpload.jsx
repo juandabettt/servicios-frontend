@@ -46,6 +46,7 @@ export default function InvoiceUpload() {
   const [pollingEnabled, setPollingEnabled] = useState(false);
   const [ocrData, setOcrData] = useState(null);
   const [payNow, setPayNow] = useState(false);
+  const [montoDisplay, setMontoDisplay] = useState('');
 
   const { data: propertiesData } = useQuery({
     queryKey: ['properties'],
@@ -74,6 +75,7 @@ export default function InvoiceUpload() {
   if (pollingEnabled && invoice && invoice.estado !== 'PROCESANDO_OCR' && step === 1) {
     setPollingEnabled(false);
     setOcrData(invoice);
+    setMontoDisplay(invoice.montoTotal ? Number(invoice.montoTotal).toLocaleString('es-CO') : '');
     reset({
       proveedor: invoice.proveedor || '',
       periodoFacturado: invoice.periodoFacturado || '',
@@ -320,10 +322,17 @@ export default function InvoiceUpload() {
             <div>
               <label className="block text-sm font-medium text-on-surface mb-1.5">Monto total</label>
               <input
-                {...register('montoTotal', { valueAsNumber: true })}
-                type="number"
+                {...register('montoTotal', { setValueAs: (v) => parseInt(String(v).replace(/\./g, ''), 10) || 0 })}
+                type="text"
+                inputMode="numeric"
+                value={montoDisplay}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/\D/g, '');
+                  const num = parseInt(raw, 10) || 0;
+                  setMontoDisplay(raw ? num.toLocaleString('es-CO') : '');
+                }}
                 className="w-full bg-surface-container-low border border-outline-variant rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none"
-                placeholder="84500"
+                placeholder="84.500"
               />
               {errors.montoTotal && <p className="mt-1 text-xs text-error">Monto inválido</p>}
             </div>

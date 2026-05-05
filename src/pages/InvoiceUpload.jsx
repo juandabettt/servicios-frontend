@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { invoicesApi } from '../api/invoices.api';
 import { propertiesApi } from '../api/properties.api';
 import { usePolling } from '../hooks/usePolling';
@@ -34,6 +34,7 @@ const extractArray = (data) => {
 
 export default function InvoiceUpload() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const fileInputRef = useRef();
   const cameraInputRef = useRef();
 
@@ -139,6 +140,7 @@ export default function InvoiceUpload() {
   };
 
   const handleSave = () => {
+    queryClient.invalidateQueries({ queryKey: ['invoices'] });
     toast.success('¡Factura guardada correctamente');
     navigate('/invoices');
   };

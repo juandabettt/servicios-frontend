@@ -5,7 +5,7 @@ const NAV_ITEMS = [
   { path: '/dashboard', icon: 'home', label: 'Inicio' },
   { path: '/invoices', icon: 'description', label: 'Facturas' },
   { path: '/payments', icon: 'payments', label: 'Pagar' },
-  { path: '/ai', icon: 'psychology', label: 'IA' },
+  { path: '/autopay', icon: 'autorenew', label: 'Autopago' },
   { path: '/profile', icon: 'person', label: 'Perfil' },
 ];
 

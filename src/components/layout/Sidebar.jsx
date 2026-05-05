@@ -9,6 +9,8 @@ const NAV_ITEMS = [
   { path: '/invoices', icon: 'description', label: 'Facturas' },
   { path: '/payments', icon: 'payments', label: 'Pagar' },
   { path: '/ai', icon: 'psychology', label: 'Análisis IA' },
+  { path: '/properties', icon: 'home_work', label: 'Mis propiedades' },
+  { path: '/autopay', icon: 'autorenew', label: 'Autopago' },
   { path: '/profile', icon: 'person', label: 'Perfil' },
 ];
 
@@ -58,14 +60,7 @@ export default function Sidebar() {
           })}
         </nav>
 
-        <div className="mt-auto pt-4 space-y-2 border-t border-gray-200/50 dark:border-gray-800/50">
-          <button
-            onClick={() => navigate('/profile')}
-            className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg text-sm"
-          >
-            <Icon name="settings" />
-            <span className="font-plus-jakarta">Ajustes</span>
-          </button>
+        <div className="mt-auto pt-4 border-t border-gray-200/50 dark:border-gray-800/50">
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all rounded-lg text-sm"

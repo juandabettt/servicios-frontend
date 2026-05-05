@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../api/auth.api';
+import { apiClient } from '../api/client';
 import { useAuthStore } from '../store/auth.store';
 import toast from 'react-hot-toast';
 
@@ -10,10 +11,15 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: ({ email, password }) => authApi.login(email, password),
-    onSuccess: ({ data }) => {
+    onSuccess: async ({ data }) => {
       setTokens(data.accessToken, data.refreshToken);
-      setUser(data.user || data.usuario);
+      const usuarioBase = data.user || data.usuario;
+      setUser(usuarioBase);
       navigate('/dashboard');
+      try {
+        const { data: perfil } = await apiClient.get('/users/profile');
+        setUser({ ...usuarioBase, ...perfil });
+      } catch {}
     },
   });
 }

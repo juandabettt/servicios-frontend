@@ -29,7 +29,10 @@ export default function TopBar() {
           <Icon name="notifications" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full" />
         </button>
-        <button className="p-2 text-teal-900 dark:text-teal-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-full">
+        <button
+          onClick={() => navigate('/profile/ayuda')}
+          className="p-2 text-teal-900 dark:text-teal-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-full"
+        >
           <Icon name="help" />
         </button>
         <div className="flex items-center gap-3 ml-2 pl-4 border-l border-gray-200/50 dark:border-gray-800/50">

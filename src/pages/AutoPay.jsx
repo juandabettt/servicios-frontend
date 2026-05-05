@@ -108,7 +108,7 @@ export default function AutoPay() {
                   <p className="text-xs text-on-surface-variant mt-0.5">
                     {TIPO_LABEL[tipo] || tipo}
                     {rule.diasAntesVencimiento && ` · ${rule.diasAntesVencimiento}d antes`}
-                    {rule.montoMaximo && ` · Máx $${rule.montoMaximo}`}
+                    {rule.montoMaximo && ` · Máx $${Number(rule.montoMaximo).toLocaleString('es-CO')}`}
                   </p>
                   {rule.totalPagosRealizados > 0 && (
                     <p className="text-xs text-primary mt-0.5">{rule.totalPagosRealizados} pagos realizados</p>

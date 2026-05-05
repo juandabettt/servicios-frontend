@@ -152,7 +152,9 @@ export default function Payments() {
                 className="w-full text-left bg-surface-container-low rounded-3xl p-5 border-2 border-outline-variant hover:border-primary/40 hover:bg-primary/5 transition-all space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-on-surface">{factura.proveedor || factura.nombreProveedor}</span>
+                  <span className="font-bold text-on-surface">
+                    {factura.proveedorNombre || factura.tipoServicio || 'Servicio público'}
+                  </span>
                   <span
                     className={`text-xs font-bold px-2 py-1 rounded-full ${
                       factura.estado === 'VENCIDA'
@@ -163,7 +165,18 @@ export default function Payments() {
                     {factura.estado}
                   </span>
                 </div>
+                {factura.propertyNombre && (
+                  <p className="text-xs text-on-surface-variant flex items-center gap-1">
+                    <Icon name="home" className="text-sm" />
+                    {factura.propertyNombre}
+                  </p>
+                )}
                 <p className="text-sm text-on-surface-variant">{factura.periodoFacturado}</p>
+                {factura.consumoUnidad != null && factura.unidadMedida && (
+                  <p className="text-sm text-on-surface-variant">
+                    Consumo: {factura.consumoUnidad} {factura.unidadMedida}
+                  </p>
+                )}
                 <p className="text-2xl font-black text-primary">{formatCOP(factura.montoTotal)}</p>
               </button>
             ))}

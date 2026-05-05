@@ -4,7 +4,8 @@
       "Bash(npm --version)",
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(ls *)"
+      "Bash(ls *)",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"C:\\\\Users\\\\Administrator\\\\Desktop\\\\persistir datos frontend\\\\servicios-frontend\\\\feature-datos-personales-persistir.md\"\\))"
     ]
   }
 }

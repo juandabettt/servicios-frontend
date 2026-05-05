@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { profileApi } from '../../api/profile.api';
@@ -16,6 +16,24 @@ export default function DatosPersonales() {
     documento: user?.documento || '',
   });
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    profileApi.get()
+      .then(({ data }) => {
+        const perfil = {
+          nombre: data.nombre || '',
+          telefono: data.telefono || '',
+          ciudad: data.ciudad || '',
+          documento: data.documento || '',
+        };
+        setForm(perfil);
+        setUser({ ...user, ...data });
+      })
+      .catch(() => {})
+      .finally(() => setFetching(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +58,30 @@ export default function DatosPersonales() {
       setLoading(false);
     }
   };
+
+  if (fetching) {
+    return (
+      <div className="max-w-2xl mx-auto px-6 pt-8 pb-8 space-y-6">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/profile')}
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors"
+          >
+            <Icon name="arrow_back" className="text-on-surface" />
+          </button>
+          <h1 className="text-2xl font-extrabold text-on-surface">Datos personales</h1>
+        </div>
+        <div className="bg-surface-container-lowest rounded-3xl p-6 space-y-5 border border-outline-variant/20">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-4 w-32 rounded-lg bg-surface-container animate-pulse" />
+              <div className="h-12 w-full rounded-2xl bg-surface-container animate-pulse" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-6 pt-8 pb-8 space-y-6">

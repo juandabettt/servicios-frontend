@@ -65,6 +65,7 @@ export default function Payments() {
 
   const handleConfirm = async () => {
     if (!metodo) { toast.error('Selecciona un método de pago'); return; }
+    if (!invoiceId) { navigate('/invoices'); return; }
 
     setProcessing(true);
     try {
@@ -100,7 +101,7 @@ export default function Payments() {
         <span className="font-medium">Volver</span>
       </button>
 
-      <h1 className="text-3xl font-extrabold text-on-surface">Pagar factura</h1>
+      <h1 className="text-3xl font-extrabold text-on-surface">{invoiceId ? 'Pagar factura' : 'Métodos de pago'}</h1>
 
       {/* Invoice summary */}
       {invoice && (
@@ -227,7 +228,11 @@ export default function Payments() {
             disabled={processing || !metodo}
             className="w-full py-4 bg-primary text-on-primary font-bold rounded-full hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
           >
-            {processing ? 'Procesando...' : `Pagar ${invoice ? formatCOP(invoice.montoTotal) : ''}`}
+            {processing
+              ? 'Procesando...'
+              : invoiceId
+                ? `Pagar ${invoice ? formatCOP(invoice.montoTotal) : ''}`
+                : 'Seleccionar factura'}
           </button>
         </>
       )}

@@ -61,6 +61,7 @@ export const router = createBrowserRouter([
           { path: '/invoices', element: <Suspense fallback={<LoadingSpinner />}><Invoices /></Suspense> },
           { path: '/invoices/upload', element: <Suspense fallback={<LoadingSpinner />}><InvoiceUpload /></Suspense> },
           { path: '/invoices/:id', element: <Suspense fallback={<LoadingSpinner />}><InvoiceDetail /></Suspense> },
+          { path: '/payments', element: <Suspense fallback={<LoadingSpinner />}><Payments /></Suspense> },
           { path: '/payments/:invoiceId', element: <Suspense fallback={<LoadingSpinner />}><Payments /></Suspense> },
           { path: '/payments/result/:transactionId', element: <Suspense fallback={<LoadingSpinner />}><PaymentResult /></Suspense> },
           { path: '/ai', element: <Suspense fallback={<LoadingSpinner />}><AiInsights /></Suspense> },

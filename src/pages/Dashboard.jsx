@@ -62,7 +62,7 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col gap-3 w-full md:w-auto">
             <button
-              onClick={() => navigate('/payments/bulk')}
+              onClick={() => navigate('/payments')}
               className="bg-secondary text-white font-bold py-4 px-8 rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2"
             >
               <span>Pagar todo</span>

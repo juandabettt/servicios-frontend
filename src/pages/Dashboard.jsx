@@ -154,7 +154,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { icon: 'upload_file', label: 'Subir factura', path: '/invoices/upload' },
-              { icon: 'credit_card', label: 'Métodos pago', path: '/profile' },
+              { icon: 'credit_card', label: 'Métodos pago', path: '/payments' },
               { icon: 'analytics', label: 'Análisis IA', path: '/ai' },
               { icon: 'history', label: 'Historial', path: '/invoices' },
             ].map(({ icon, label, path }) => (

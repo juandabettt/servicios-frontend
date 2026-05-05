@@ -27,6 +27,10 @@ export default function Payments() {
   const { invoiceId } = useParams();
   const navigate = useNavigate();
 
+  // Paso 1: seleccionar factura | Paso 2: confirmar pago y elegir método
+  const [step, setStep] = useState(invoiceId ? 2 : 1);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+
   const [metodo, setMetodo] = useState(null);
   const [nequiPhone, setNequiPhone] = useState('');
   const [banco, setBanco] = useState('');
@@ -37,11 +41,28 @@ export default function Payments() {
   const [psePollEnabled, setPsePollEnabled] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
 
-  const { data: invoice } = useQuery({
+  // Paso 1 — lista de facturas pendientes
+  const { data: facturasPendientes, isLoading: loadingFacturas } = useQuery({
+    queryKey: ['invoices-pendientes'],
+    queryFn: () =>
+      invoicesApi.getAll().then((r) => {
+        const facturas = r.data?.content || r.data || [];
+        return facturas.filter((f) => f.estado === 'PENDIENTE' || f.estado === 'VENCIDA');
+      }),
+    enabled: step === 1,
+    retry: false,
+    throwOnError: false,
+  });
+
+  // Paso 2 — factura por URL (acceso directo con invoiceId)
+  const { data: invoiceFromUrl } = useQuery({
     queryKey: ['invoice', invoiceId],
     queryFn: () => invoicesApi.getById(invoiceId).then((r) => r.data),
-    enabled: !!invoiceId,
+    enabled: !!invoiceId && step === 2 && !selectedInvoice,
   });
+
+  const invoice = selectedInvoice || invoiceFromUrl;
+  const currentInvoiceId = selectedInvoice?.id || invoiceId;
 
   // PSE polling
   const { data: pollData } = usePolling({
@@ -63,9 +84,14 @@ export default function Payments() {
     }
   }
 
+  const handleSelectInvoice = (factura) => {
+    setSelectedInvoice(factura);
+    setStep(2);
+  };
+
   const handleConfirm = async () => {
     if (!metodo) { toast.error('Selecciona un método de pago'); return; }
-    if (!invoiceId) { navigate('/invoices'); return; }
+    if (!currentInvoiceId) { navigate('/invoices'); return; }
 
     setProcessing(true);
     try {
@@ -78,7 +104,7 @@ export default function Payments() {
         extraData.cvv = cardCvv;
       }
 
-      const { data } = await paymentsApi.process(invoiceId, metodo, extraData);
+      const { data } = await paymentsApi.process(currentInvoiceId, metodo, extraData);
 
       if (metodo === 'PSE' && data.urlRedireccionPse) {
         window.open(data.urlRedireccionPse, '_blank');
@@ -94,16 +120,72 @@ export default function Payments() {
     }
   };
 
+  // ── Paso 1: lista de facturas pendientes ────────────────────────────────────
+  if (step === 1) {
+    return (
+      <div className="max-w-lg mx-auto px-6 pt-8 pb-8 space-y-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
+        >
+          <Icon name="arrow_back" />
+          <span className="font-medium">Volver</span>
+        </button>
+
+        <h1 className="text-3xl font-extrabold text-on-surface">Seleccionar factura</h1>
+
+        {loadingFacturas ? (
+          <div className="flex justify-center py-12">
+            <div className="w-8 h-8 border-4 border-primary-fixed border-t-primary rounded-full animate-spin" />
+          </div>
+        ) : !facturasPendientes?.length ? (
+          <div className="flex flex-col items-center py-12 gap-4 text-center">
+            <Icon name="check_circle" className="text-5xl text-primary" />
+            <p className="text-on-surface-variant">No tienes facturas pendientes de pago</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {facturasPendientes.map((factura) => (
+              <button
+                key={factura.id}
+                onClick={() => handleSelectInvoice(factura)}
+                className="w-full text-left bg-surface-container-low rounded-3xl p-5 border-2 border-outline-variant hover:border-primary/40 hover:bg-primary/5 transition-all space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-on-surface">{factura.proveedor || factura.nombreProveedor}</span>
+                  <span
+                    className={`text-xs font-bold px-2 py-1 rounded-full ${
+                      factura.estado === 'VENCIDA'
+                        ? 'bg-error/10 text-error'
+                        : 'bg-primary/10 text-primary'
+                    }`}
+                  >
+                    {factura.estado}
+                  </span>
+                </div>
+                <p className="text-sm text-on-surface-variant">{factura.periodoFacturado}</p>
+                <p className="text-2xl font-black text-primary">{formatCOP(factura.montoTotal)}</p>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── Paso 2: confirmar pago y elegir método ──────────────────────────────────
   return (
     <div className="max-w-lg mx-auto px-6 pt-8 pb-8 space-y-8">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+      <button
+        onClick={() => (invoiceId ? navigate(-1) : setStep(1))}
+        className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
+      >
         <Icon name="arrow_back" />
         <span className="font-medium">Volver</span>
       </button>
 
-      <h1 className="text-3xl font-extrabold text-on-surface">{invoiceId ? 'Pagar factura' : 'Métodos de pago'}</h1>
+      <h1 className="text-3xl font-extrabold text-on-surface">Confirmar pago</h1>
 
-      {/* Invoice summary */}
       {invoice && (
         <div className="bg-primary/5 rounded-3xl p-6 space-y-2">
           <p className="text-sm text-on-surface-variant">Estás pagando</p>
@@ -113,7 +195,6 @@ export default function Payments() {
         </div>
       )}
 
-      {/* PSE waiting screen */}
       {psePollEnabled ? (
         <div className="flex flex-col items-center py-12 gap-6 text-center">
           <div className="w-16 h-16 border-4 border-primary-fixed border-t-primary rounded-full animate-spin" />
@@ -124,7 +205,6 @@ export default function Payments() {
         </div>
       ) : (
         <>
-          {/* Payment method selector */}
           <div className="space-y-3">
             <h2 className="font-bold text-on-surface">Método de pago</h2>
             {METODOS.map(({ id, label, icon, color, bg }) => (
@@ -146,7 +226,6 @@ export default function Payments() {
             ))}
           </div>
 
-          {/* NEQUI extra */}
           {metodo === 'NEQUI' && (
             <div>
               <label className="block text-sm font-medium text-on-surface mb-1.5">Número celular Nequi</label>
@@ -163,7 +242,6 @@ export default function Payments() {
             </div>
           )}
 
-          {/* PSE extra */}
           {metodo === 'PSE' && (
             <div>
               <label className="block text-sm font-medium text-on-surface mb-1.5">Banco</label>
@@ -178,7 +256,6 @@ export default function Payments() {
             </div>
           )}
 
-          {/* Card extra */}
           {metodo === 'TARJETA_CREDITO' && (
             <div className="space-y-4">
               <div>
@@ -228,11 +305,7 @@ export default function Payments() {
             disabled={processing || !metodo}
             className="w-full py-4 bg-primary text-on-primary font-bold rounded-full hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
           >
-            {processing
-              ? 'Procesando...'
-              : invoiceId
-                ? `Pagar ${invoice ? formatCOP(invoice.montoTotal) : ''}`
-                : 'Seleccionar factura'}
+            {processing ? 'Procesando...' : `Confirmar pago${invoice ? ` ${formatCOP(invoice.montoTotal)}` : ''}`}
           </button>
         </>
       )}

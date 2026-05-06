@@ -50,6 +50,8 @@ export default function Payments() {
         return facturas.filter((f) => f.estado === 'PENDIENTE' || f.estado === 'VENCIDA');
       }),
     enabled: step === 1,
+    refetchOnMount: true,
+    staleTime: 0,
     retry: false,
     throwOnError: false,
   });

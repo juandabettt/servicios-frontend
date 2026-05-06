@@ -152,7 +152,10 @@ export default function AiInsights() {
               {prop.nombre || prop.direccion}
             </button>
           ))}
-          <button className="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl font-medium text-sm whitespace-nowrap transition-colors">
+          <button
+            onClick={() => navigate('/properties')}
+            className="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl font-medium text-sm whitespace-nowrap transition-colors"
+          >
             <Icon name="add" className="text-sm" /> Nueva Propiedad
           </button>
         </div>

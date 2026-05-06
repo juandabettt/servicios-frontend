@@ -12,5 +12,6 @@ export const invoicesApi = {
   getById: (id) => apiClient.get(`/invoices/${id}`),
   getAll: (params) => apiClient.get('/invoices', { params }),
   correct: (id, data) => apiClient.put(`/invoices/${id}/correct`, data),
+  createManual: (data) => apiClient.post('/invoices/manual', data),
   delete: (id) => apiClient.delete(`/invoices/${id}`),
 };

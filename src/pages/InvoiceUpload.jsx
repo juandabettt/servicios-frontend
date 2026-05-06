@@ -133,8 +133,36 @@ export default function InvoiceUpload() {
     }
   };
 
+  const handleManualEntry = () => {
+    setManualMode(true);
+    reset({
+      proveedor: '',
+      periodoFacturado: '',
+      fechaVencimiento: '',
+      montoTotal: 0,
+      consumo: undefined,
+      unidadConsumo: 'm³',
+    });
+    setMontoDisplay('');
+    setStep(2);
+  };
+
   const onSubmitCorrection = async (formData) => {
-    if (invoiceId) {
+    if (manualMode && !invoiceId) {
+      const props = extractArray(propertiesData);
+      const realPropertyId = props[0]?.id;
+      if (!realPropertyId) {
+        toast.error('Necesitas crear una propiedad primero');
+        navigate('/properties');
+        return;
+      }
+      try {
+        const { data } = await invoicesApi.createManual({ ...formData, propertyId: realPropertyId });
+        setInvoiceId(data.invoiceId || data.id);
+      } catch {
+        // Continuar sin invoiceId si el endpoint no está disponible
+      }
+    } else if (invoiceId) {
       await invoicesApi.correct(invoiceId, formData);
     }
     setOcrData(formData);
@@ -245,6 +273,20 @@ export default function InvoiceUpload() {
             className="hidden"
             onChange={(e) => handleFileSelect(e.target.files[0])}
           />
+
+          <div className="flex items-center gap-3 my-4">
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            <span className="text-xs text-gray-400 font-medium">o</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+          </div>
+
+          <button
+            onClick={handleManualEntry}
+            className="w-full py-3 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 text-sm font-medium text-gray-500 dark:text-gray-400 hover:border-teal-500 hover:text-teal-600 transition-all flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-xl">edit_note</span>
+            Agregar manualmente
+          </button>
 
           {selectedFile && (
             <button

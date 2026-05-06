@@ -4,4 +4,5 @@ export const notificationsApi = {
   getAll: () => apiClient.get('/notifications'),
   markAsRead: (id) => apiClient.put(`/notifications/${id}/read`),
   markAllAsRead: () => apiClient.put('/notifications/read-all'),
+  create: (notification) => apiClient.post('/notifications', notification),
 };

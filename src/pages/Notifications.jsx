@@ -5,6 +5,14 @@ import Icon from '../components/ui/Icon';
 import { formatDateShort } from '../utils/dates';
 
 const NOTIFICATION_ICONS = {
+  FACTURA_AGREGADA: { icon: 'receipt', color: 'text-tertiary', bg: 'bg-tertiary-fixed/20' },
+  FACTURA_VENCE_7_DIAS: { icon: 'schedule', color: 'text-secondary', bg: 'bg-secondary-fixed' },
+  FACTURA_VENCE_3_DIAS: { icon: 'schedule', color: 'text-error', bg: 'bg-error-container' },
+  FACTURA_VENCE_HOY: { icon: 'warning', color: 'text-error', bg: 'bg-error-container' },
+  FACTURA_VENCIDA: { icon: 'error', color: 'text-error', bg: 'bg-error-container' },
+  PAGO_EXITOSO: { icon: 'check_circle', color: 'text-tertiary', bg: 'bg-tertiary-fixed/20' },
+  PAGO_FALLIDO: { icon: 'cancel', color: 'text-error', bg: 'bg-error-container' },
+  AUTOPAGO_EJECUTADO: { icon: 'autorenew', color: 'text-primary', bg: 'bg-primary-fixed' },
   FACTURA_POR_VENCER: { icon: 'schedule', color: 'text-secondary', bg: 'bg-secondary-fixed' },
   PAGO_CONFIRMADO: { icon: 'check_circle', color: 'text-tertiary', bg: 'bg-tertiary-fixed/20' },
   ANALISIS_LISTO: { icon: 'psychology', color: 'text-primary', bg: 'bg-primary-fixed' },
@@ -52,9 +60,19 @@ export default function Notifications() {
 
   const handleNotificationClick = (n) => {
     markRead.mutate(n.id);
-    if (n.tipo === 'FACTURA_POR_VENCER') navigate(`/invoices/${n.referenciaId}`);
-    else if (n.tipo === 'PAGO_CONFIRMADO') navigate(`/payments/result/${n.referenciaId}`);
-    else if (n.tipo === 'ANALISIS_LISTO') navigate('/ai');
+    const facturaTypes = ['FACTURA_AGREGADA', 'FACTURA_POR_VENCER', 'FACTURA_VENCE_7_DIAS', 'FACTURA_VENCE_3_DIAS', 'FACTURA_VENCE_HOY', 'FACTURA_VENCIDA'];
+    if (facturaTypes.includes(n.tipo)) {
+      if (n.referenciaId) navigate(`/invoices/${n.referenciaId}`);
+      else navigate('/invoices');
+    } else if (n.tipo === 'PAGO_CONFIRMADO' || n.tipo === 'PAGO_EXITOSO') {
+      if (n.referenciaId) navigate(`/payments/result/${n.referenciaId}`);
+    } else if (n.tipo === 'PAGO_FALLIDO') {
+      navigate('/payments');
+    } else if (n.tipo === 'ANALISIS_LISTO') {
+      navigate('/ai');
+    } else if (n.tipo === 'AUTOPAGO_EJECUTADO') {
+      navigate('/autopay');
+    }
   };
 
   return (
@@ -101,8 +119,8 @@ export default function Notifications() {
                       <Icon name={icon} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium text-on-surface ${!n.leida ? 'font-bold' : ''}`}>{n.titulo || n.mensaje}</p>
-                      <p className="text-xs text-on-surface-variant mt-0.5 truncate">{n.descripcion || ''}</p>
+                      <p className={`text-sm text-on-surface ${!n.leida ? 'font-bold' : 'font-medium'}`}>{n.titulo}</p>
+                      <p className="text-xs text-on-surface-variant mt-0.5 truncate">{n.mensaje || n.descripcion || ''}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2 flex-shrink-0">
                       <span className="text-[10px] text-on-surface-variant">{n.fechaCreacion ? formatDateShort(n.fechaCreacion) : ''}</span>

@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { paymentsApi } from '../api/payments.api';
+import { notificationsApi } from '../api/notifications.api';
 import Icon from '../components/ui/Icon';
 import { formatCOP } from '../utils/currency';
 import { formatDate } from '../utils/dates';
@@ -8,6 +10,8 @@ import { formatDate } from '../utils/dates';
 export default function PaymentResult() {
   const { transactionId } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const notifiedRef = useRef(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['payment', transactionId],
@@ -16,6 +20,26 @@ export default function PaymentResult() {
   });
 
   const payment = data;
+
+  useEffect(() => {
+    if (!payment || notifiedRef.current) return;
+    const isFinal = payment.estado === 'APROBADA' || payment.estado === 'RECHAZADA';
+    if (!isFinal) return;
+
+    notifiedRef.current = true;
+
+    const isApproved = payment.estado === 'APROBADA';
+    notificationsApi.create({
+      tipo: isApproved ? 'PAGO_EXITOSO' : 'PAGO_FALLIDO',
+      titulo: isApproved ? 'Pago realizado' : 'Pago fallido',
+      mensaje: isApproved
+        ? `Tu pago de ${formatCOP(payment.monto)} fue procesado exitosamente.`
+        : `No se pudo procesar tu pago de ${formatCOP(payment.monto)}. Intenta de nuevo.`,
+      referenciaId: payment.transactionId,
+    })
+      .then(() => queryClient.invalidateQueries({ queryKey: ['notifications'] }))
+      .catch(() => {});
+  }, [payment]);
 
   if (isLoading) {
     return (

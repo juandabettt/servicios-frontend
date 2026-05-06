@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { invoicesApi } from '../api/invoices.api';
 import { propertiesApi } from '../api/properties.api';
+import { notificationsApi } from '../api/notifications.api';
 import { usePolling } from '../hooks/usePolling';
 import Icon from '../components/ui/Icon';
 import { formatCOP } from '../utils/currency';
@@ -169,8 +170,17 @@ export default function InvoiceUpload() {
     setStep(3);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     queryClient.invalidateQueries({ queryKey: ['invoices'] });
+    try {
+      await notificationsApi.create({
+        tipo: 'FACTURA_AGREGADA',
+        titulo: 'Nueva factura registrada',
+        mensaje: `Se registró una factura de ${formatCOP(ocrData.montoTotal)} para tu propiedad`,
+        referenciaId: invoiceId,
+      });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    } catch {}
     toast.success('¡Factura guardada correctamente');
     navigate('/invoices');
   };
